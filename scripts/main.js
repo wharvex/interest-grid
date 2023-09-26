@@ -20,7 +20,6 @@ function registerClearStorageOnImgClick(imgElement, txtElement) {
 
 function registerGetUsernameOnImgClick(imgElement, txtElement) {
     imgElement.onclick = () => {
-        console.log("wwwww");
         username = prompt("Who are you?");
         localStorage.setItem("username", username);
         registerClearStorageOnImgClick(imgElement, txtElement);
@@ -37,7 +36,6 @@ function main() {
         updateElementsLoggedOut(imgElement, txtElement);
         registerGetUsernameOnImgClick(imgElement, txtElement);
     } else {
-        console.log("hi");
         updateElementsLoggedIn(username, imgElement, txtElement);
         registerClearStorageOnImgClick(imgElement, txtElement);
     }
