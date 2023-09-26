@@ -1,27 +1,46 @@
-function updateImgAndTxt() {
-    hiImg.title = ` (Hi ${username}. Click me to logout.)`;
-    hiTxt.innerText = `Hey ${username}. Click the image to logout. `;
+function updateElementsLoggedIn(username, imgElement, txtElement) {
+    imgElement.title = `Hi ${username}. Click me to logout.`;
+    txtElement.innerText = `Hi ${username}. Click the image to logout. `;
 }
 
-function confirmClearOnClick() {
-    if (confirm("Are you sure you want to logout?"))
-        localStorage.clear();
+function updateElementsLoggedOut(imgElement, txtElement) {
+    imgElement.title = "Click me to login";
+    txtElement.innerText = "Click the image to login. "
 }
 
-function registerClearOnClick() {
-    hiImg.onclick = () => confirmClearOnClick();
+function registerClearStorageOnImgClick(imgElement, txtElement) {
+    imgElement.onclick = () => {
+        if (confirm("Are you sure you want to logout?")) {
+            localStorage.clear();
+            registerGetUsernameOnImgClick(imgElement, txtElement);
+            updateElementsLoggedOut(imgElement, txtElement);
+        }
+    }
 }
 
-const hiImg = document.getElementById("hi-img");
-const hiTxt = document.getElementById("hey-txt");
-const username = localStorage.getItem("username");
-if (!username) {
-    hiImg.title += " (Click me)";
-    hiTxt.innerText = "Click the image. "
-    hiImg.onclick = () => localStorage.setItem("username", prompt("Please enter your name."));
-    updateImgAndTxt();
-    registerClearOnClick();
-} else {
-    updateImgAndTxt();
-    registerClearOnClick();
+function registerGetUsernameOnImgClick(imgElement, txtElement) {
+    imgElement.onclick = () => {
+        console.log("wwwww");
+        username = prompt("Who are you?");
+        localStorage.setItem("username", username);
+        registerClearStorageOnImgClick(imgElement, txtElement);
+        updateElementsLoggedIn(username, imgElement, txtElement);
+    }
 }
+
+function main() {
+    const txtElement = document.getElementById("login-txt");
+    const imgElement = document.getElementById("login-img");
+    let username = localStorage.getItem("username");
+    let loggedIn = username != null;
+    if (!loggedIn) {
+        updateElementsLoggedOut(imgElement, txtElement);
+        registerGetUsernameOnImgClick(imgElement, txtElement);
+    } else {
+        console.log("hi");
+        updateElementsLoggedIn(username, imgElement, txtElement);
+        registerClearStorageOnImgClick(imgElement, txtElement);
+    }
+}
+
+main();
